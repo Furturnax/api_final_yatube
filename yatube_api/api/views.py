@@ -1,1 +1,55 @@
-# TODO:  Напишите свой вариант
+from rest_framework import viewsets
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+from api.permissions import IsAuthorOrReadOnly
+from api.serializers import (
+    CommentSerializer,
+    GroupSerializer,
+    FollowSerializer,
+    PostSerializer,
+)
+from posts.models import Group, Post, Follow
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    """ViewSet для модели Post."""
+
+    permission_classes = [IsAuthenticatedOrReadOnly & IsAuthorOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """ViewSet для модели Comment."""
+
+    permission_classes = [IsAuthenticatedOrReadOnly & IsAuthorOrReadOnly]
+    serializer_class = CommentSerializer
+
+    def get_post(self):
+        return get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+
+    def get_queryset(self):
+        return self.get_post().comments.all()
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user, post=self.get_post())
+
+
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet для модели Group - только на чтение."""
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class FollowViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet для модели Follow - только на чтение."""
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
