@@ -32,7 +32,7 @@ git clone git@github.com:Furturnax/api_final_yatube.git
 ```
 
 ```bash
-cd api_final_yatube
+cd api_final_yatube/
 ```
 
 
@@ -53,6 +53,12 @@ python -m pip install --upgrade pip
 
 ```bash
 pip install -r requirements.txt
+```
+
+
+>Перейти в директорию с manage.py:
+```bash
+cd yatube_api/
 ```
 
 
@@ -78,7 +84,7 @@ python manage.py runserver
 
 
 Зарегистрировать пользователя через **Postman**. По адресу http://127.0.0.1:8000/api/v1/users/ в формате `JSON` передать данные:
-```json
+```
 {
 	"username": "username",
 	"password": "password"
