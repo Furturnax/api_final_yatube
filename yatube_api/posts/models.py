@@ -32,18 +32,18 @@ class Group(models.Model):
 class Post(models.Model):
     """Модель класса Post."""
 
+    author = models.ForeignKey(
+        User,
+        verbose_name='Автор публикации',
+        on_delete=models.CASCADE,
+        related_name='posts',
+    )
     text = models.TextField(
         'Текст публикации',
     )
     pub_date = models.DateTimeField(
         'Дата публикации',
         auto_now_add=True,
-    )
-    author = models.ForeignKey(
-        User,
-        verbose_name='Автор публикации',
-        on_delete=models.CASCADE,
-        related_name='posts',
     )
     image = models.ImageField(
         'Изображение',
@@ -78,12 +78,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
     )
-    post = models.ForeignKey(
-        Post,
-        verbose_name='Публикация',
-        on_delete=models.CASCADE,
-        related_name='comments'
-    )
     text = models.TextField(
         'Текст комментария',
     )
@@ -91,6 +85,12 @@ class Comment(models.Model):
         'Дата добавления',
         auto_now_add=True,
         db_index=True
+    )
+    post = models.ForeignKey(
+        Post,
+        verbose_name='Публикация',
+        on_delete=models.CASCADE,
+        related_name='comments'
     )
 
     class Meta:
@@ -109,18 +109,24 @@ class Follow(models.Model):
         User,
         verbose_name='Подписчик',
         on_delete=models.CASCADE,
-        related_name='follows',
+        related_name='subscriber',
     )
     following = models.ForeignKey(
         User,
         verbose_name='Автор',
         on_delete=models.CASCADE,
-        related_name='followers',
+        related_name='following',
     )
 
     class Meta:
         verbose_name = 'подписка'
         verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'following'],
+                name='unique_user_following',
+            )
+        ]
 
     def __str__(self):
         return (f'{self.user} подписан на {self.following}')
