@@ -63,6 +63,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        ordering = ('pub_date',)
 
     def __str__(self):
         return (f'{self.author.username} - {self.pub_date} - '
@@ -123,9 +124,13 @@ class Follow(models.Model):
         verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
+                name='%(app_label)s_%(class)s_unique_relationships',
                 fields=['user', 'following'],
-                name='unique_user_following',
-            )
+            ),
+            models.CheckConstraint(
+                name='%(app_label)s_%(class)s_prevent_self_follow',
+                check=~models.Q(user=models.F('following')),
+            ),
         ]
 
     def __str__(self):

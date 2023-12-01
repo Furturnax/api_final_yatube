@@ -1,7 +1,10 @@
 from rest_framework import filters, mixins, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (
@@ -44,7 +47,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet для модели Group - только на чтение."""
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
@@ -56,15 +58,14 @@ class FollowViewSet(
 ):
     """ViewSet для модели Follow."""
 
+    permission_classes = [IsAuthenticated]
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('following__username',)
 
-    def get_user(self):
-        return get_object_or_404(User, pk=self.request.user.id)
-
     def get_queryset(self):
-        return self.get_user().subscriber.all()
+        user = get_object_or_404(User, pk=self.request.user.id)
+        return user.subscriber.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
