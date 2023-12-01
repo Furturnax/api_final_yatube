@@ -1,5 +1,4 @@
 # Проект "API для YaTube"
-
 Реализация API для социальной сети **"YaTube"**. Публикуйте свои записи с фотографиями, комментируйте чужие, присоединяйтесь к сообществам. 
 
 Основные возможности:
@@ -15,7 +14,6 @@
 <br>
 
 ## Технологический стек:
-
 - Python 3.11.5
 - Django 3.2.16
 - Django REST Framework 3.12.4
@@ -25,8 +23,7 @@
 <br>
 
 ## Как запустить проект :shipit: :
-
->Клонировать репозиторий и перейти в него в командной строке:
++ Клонировать репозиторий и перейти в него в командной строке:
 ```bash
 git clone git@github.com:Furturnax/api_final_yatube.git
 ```
@@ -35,8 +32,7 @@ git clone git@github.com:Furturnax/api_final_yatube.git
 cd api_final_yatube/
 ```
 
-
->Cоздать и активировать виртуальное окружение (Windows/Bash):
++ Cоздать и активировать виртуальное окружение (Windows/Bash):
 ```bash
 python -m venv venv
 ```
@@ -45,8 +41,7 @@ python -m venv venv
 source venv/Scripts/activate
 ```
 
-
->Установить зависимости из файла requirements.txt:
++ Установить зависимости из файла requirements.txt:
 ```bash
 python -m pip install --upgrade pip
 ```
@@ -55,20 +50,17 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-
->Перейти в директорию с manage.py:
++ Перейти в директорию с manage.py:
 ```bash
 cd yatube_api/
 ```
 
-
->Выполнить миграции:
++ Выполнить миграции:
 ```bash
 python manage.py migrate
 ```
 
-
->Запустить проект:
++ Запустить проект:
 ```bash
 python manage.py runserver
 ```
@@ -76,29 +68,44 @@ python manage.py runserver
 <br>
 
 ## Порядок запросов к API:
-
->Для работы понадобится программа **Postman**. Она существует в `desktop` и `web` версии. 
-
+Для работы понадобится программа **Postman**. Она существует в `desktop` и `web` версии. Она удобна функционалом. Либо использовать стандартный интерфейс DRF без установки дополнительного ПО. 
 
 Запустить проект. По адресу http://127.0.0.1:8000/redoc/ будет доступна документация для API **Yatube**. В документации описано, как работает API. Документация представлена в формате **Redoc**.
 
+Зарегистрировать пользователя через Admin-panel.
++ Перейти в директорию с manage.py:
+```bash
+cd yatube_api/
+```
 
-Зарегистрировать пользователя через **Postman**. По адресу http://127.0.0.1:8000/api/v1/users/ в формате `JSON` передать данные:
++ Создать пользователя-администратора:
+```bash
+python manage.py createsuperuser
+```
+
+Получить JWT-токен через **Postman**.  
++ По адресу http://127.0.0.1:8000/api/v1/jwt/create/, через POST запрос передать данные в формате `JSON`:
 ```
 {
 	"username": "username",
 	"password": "password"
 }
 ```
-
-
-Получить JWT-токен через **Postman**. По адресу http://127.0.0.1:8000/api/v1/jwt/create/ получить `"access"-токен` в формате:
++ и получить `"access"-токен`:
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNDQyOTM4LCJpYXQiOjE3MDEzNTY1MzgsImp0aSI6ImZiN2Y5ZTYwYTNiMzQxMzU5NGJlYjc2YTBkNWE0YzlmIiwidXNlcl9pZCI6M30._h5--Xdayja6eMHENZnbRA50XMR7H8b-UQYTqYyaSdc
 ```
 
+Авторизировать токен во вкладке **Authorization**.
+- В разделе **Type** выбрать `Bearer token`;
+- В разделе **Token** вставить полученный `"access"-токен`;
+- Выполнять запросы к `API`, описанных в документации. 
 
-Авторизировать токен во вкладке **Authorization**:
-1. В разделе **Type** выбрать `Bearer token`;
-2. В разделе **Token** вставить полученный `"access"-токен`;
-3. Выполнять запросы к `API`, описанных в документации. 
+<br>
+
+## Авторство
+Автор проекта - Yandex Practicum | [GitHub](https://github.com/yandex-praktikum)
+
+Разработчик - Andrew Fedorchenko | [GitHub](https://github.com/Furturnax) [Telegram](https://t.me/furturnax)
+
+Ревьюер - Evgeniy Salahutdinov | [GitHub](https://github.com/EugeneSal)
