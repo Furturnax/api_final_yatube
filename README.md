@@ -1,111 +1,44 @@
-# Проект "API для YaTube"
+# Проект "API для YaTube v. 2.0 Release Version"
 Реализация API для социальной сети **"YaTube"**. Публикуйте свои записи с фотографиями, комментируйте чужие, присоединяйтесь к сообществам. 
 
 Основные возможности:
 - любой пользователь, даже анонимный, может запросить список всех публикаций, сообществ; 
 - авторизованные пользователи могут смотреть подробности публикации, получать информацию о сообществах;
-- для автора реализован `CRUD` для публикаций;
-- для автора реализован `CRUD` для комментариев;
-- авторизованные пользователи могут подписываться на других пользователей;
-- реализована система `JWT-токенов`.
+- автор может создавать публикации, а другие пользователи комметрировать их.
 
-Проект является учебным. Основная польза в приобретении понимания реализации полного цикла `CRUD` через `ViewSet` и отдельных его компонентов через `mixins` и `GenericViewSet`, валидацию данных реализованных в `serializers`, определения роутера к разным `endpoints` и многое другое.
+Проект является учебным. Основная польза в приобретении понимания реализации `API` через `Django REST Framework`, с использованием:
+- [API для YaTube v. 1.0](https://github.com/Furturnax/api_yatube);
+- созданной системы `JWT-токенов`;
+- `ViewSet`, `mixins` и `GenericViewSet`;
+- валидации данных, реализованных в `serializers` и `models`;
+- настроек пагинации для публикаций; 
+- механизма подписки пользователей друг на друга;
+- локализации `API Response` ошибок.
 
 <br>
 
 ## Технологический стек:
-- Python 3.11.5
-- Django 3.2.16
-- Django REST Framework 3.12.4
-- SQLite3
-- Аутентификация по токену JWT + Djoser
+- [Python 3.11.5](https://docs.python.org/release/3.11.5/)
+- [Django 3.2](https://docs.djangoproject.com/en/3.2/)
+- [Django REST Framework 3.12.4](https://www.django-rest-framework.org/topics/documenting-your-api/)
+- [Pytest 6.2.4](https://docs.pytest.org/en/6.2.x/)
+- [SQLite](https://www.sqlite.org/docs.html)
+- [JSON Web Token](https://jwt.io/introduction)
+- [Djoser](https://djoser.readthedocs.io/en/latest/)
 
 <br>
 
-## Как запустить проект :shipit: :
-+ Клонировать репозиторий и перейти в него в командной строке:
-```bash
-git clone git@github.com:Furturnax/api_final_yatube.git
-```
-
-```bash
-cd api_final_yatube/
-```
-
-+ Cоздать и активировать виртуальное окружение (Windows/Bash):
-```bash
-python -m venv venv
-```
-
-```bash
-source venv/Scripts/activate
-```
-
-+ Установить зависимости из файла requirements.txt:
-```bash
-python -m pip install --upgrade pip
-```
-
-```bash
-pip install -r requirements.txt
-```
-
-+ Перейти в директорию с manage.py:
-```bash
-cd yatube_api/
-```
-
-+ Выполнить миграции:
-```bash
-python manage.py migrate
-```
-
-+ Запустить проект:
-```bash
-python manage.py runserver
-```
+## Развёртывание проекта :shipit: :
+[Руководство по развёртыванию проекта](./SetUp.md)
 
 <br>
 
-## Порядок запросов к API:
-Для работы понадобится программа **Postman**. Она существует в `desktop` и `web` версии. Она удобна функционалом. Либо использовать стандартный интерфейс DRF без установки дополнительного ПО. 
+## Dreamteam:
 
-Запустить проект. По адресу http://127.0.0.1:8000/redoc/ будет доступна документация для API **Yatube**. В документации описано, как работает API. Документация представлена в формате **Redoc**.
+[GitHub](https://github.com/yandex-praktikum) | Автор проекта - Yandex Practicum  
 
-Зарегистрировать пользователя через Admin-panel.
-+ Перейти в директорию с manage.py:
-```bash
-cd yatube_api/
-```
+[GitHub](https://github.com/Furturnax) | Разработчик - Andrew Fedorchenko 
 
-+ Создать пользователя-администратора:
-```bash
-python manage.py createsuperuser
-```
+[GitHub](https://github.com/nik-miniakink) | Наставник - Nikolay Minyakin
 
-Получить JWT-токен через **Postman**.  
-+ По адресу http://127.0.0.1:8000/api/v1/jwt/create/, через POST запрос передать данные в формате `JSON`:
-```
-{
-	"username": "username",
-	"password": "password"
-}
-```
-+ и получить `"access"-токен`:
-```
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNDQyOTM4LCJpYXQiOjE3MDEzNTY1MzgsImp0aSI6ImZiN2Y5ZTYwYTNiMzQxMzU5NGJlYjc2YTBkNWE0YzlmIiwidXNlcl9pZCI6M30._h5--Xdayja6eMHENZnbRA50XMR7H8b-UQYTqYyaSdc
-```
-
-Авторизировать токен во вкладке **Authorization**.
-- В разделе **Type** выбрать `Bearer token`;
-- В разделе **Token** вставить полученный `"access"-токен`;
-- Выполнять запросы к `API`, описанных в документации. 
-
-<br>
-
-## Авторство
-Автор проекта - Yandex Practicum | [GitHub](https://github.com/yandex-praktikum)
-
-Разработчик - Andrew Fedorchenko | [GitHub](https://github.com/Furturnax) [Telegram](https://t.me/furturnax)
-
-Ревьюер - Evgeniy Salahutdinov | [GitHub](https://github.com/EugeneSal)
+[GitHub](https://github.com/EugeneSal) | Ревьюер - Evgeniy Salahutdinov
